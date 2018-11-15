@@ -13,15 +13,15 @@ app.use(express.static('public')); // use public static files
 app.use(bodyParser.json());// parse application/json
 app.use('/api', require('./routers/api'));
 // Add headers
-// app.use( (req, res, next) => {
-//     // res.header("Access-Control-Allow-Origin", "*");
+app.use( (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
 //     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");    
 //     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3030');
 //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 //     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 //     res.setHeader('Access-Control-Allow-Credentials', true);
-//     next();
-// });
+    next();
+});
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
 });
