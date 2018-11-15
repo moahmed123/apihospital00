@@ -40,6 +40,6 @@ const hospitalSchema = new Schema({
     }
 });
 
-const Datahospital = mongoose.model('hospitaldetails', hospitalSchema);
+const Datahospital = mongoose.model('hospitaldetails', hospitalSchema); //hospitaldetails
 
 module.exports = Datahospital;

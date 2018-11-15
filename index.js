@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-var cors = require('cors');
+//var cors = require('cors');
 
 // Create App.
 const app = express();
 // Connect Database.
-mongoose.connect('mongodb://localhost:27017/hospital', { useNewUrlParser: true });
+mongoose.connect('mongodb://m_alaa:b01224589500@ds039311.mlab.com:39311/hospital'); //, { useNewUrlParser: true }
 // middelware 
 app.use(express.static('public')); // use public static files
 //app.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded {use in Login}
@@ -22,7 +22,7 @@ app.use('/api', require('./routers/api'));
 //     res.setHeader('Access-Control-Allow-Credentials', true);
 //     next();
 // });
-app.use(cors({origin: 'http://localhost:3030'}));
+//app.use(cors({origin: 'http://localhost:3030'}));
 
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
