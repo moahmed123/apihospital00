@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 // Create App.
 const app = express();
 // Connect Database.
-mongoose.connect('mongodb://m_alaa:b01224589500@ds039311.mlab.com:39311/hospital'); //, { useNewUrlParser: true }
+mongoose.connect('', { useNewUrlParser: true });// Add Your Data Base.
 // middelware 
 app.use(express.static('public')); // use public static files
 //app.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded {use in Login}
@@ -22,12 +22,9 @@ app.use('/api', require('./routers/api'));
 //     res.setHeader('Access-Control-Allow-Credentials', true);
 //     next();
 // });
-//app.use(cors({origin: 'http://localhost:3030'}));
-
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
 });
-
 // Port 
 const port = process.env.PORT || 3000;
 app.listen( port, () => {
@@ -36,6 +33,5 @@ app.listen( port, () => {
 });
 /**
  * Data Base To Used
- * db.hospitaldetails.insert({name:'homya',details:'findsdse',longitude:'2343434',latitude:'495065',type:'fddf',categories:'ddsdsd',review:[{nameUser:'mohamedalaa',rate:'5',comment:'finetodone',timeComment:'11sep2011'}],city:'alex',country:'egypt'}) 
- *
+ * db.hospitaldetails.insert({name:'homya',details:'findsdse',longitude:'2343434',latitude:'495065',type:'fddf',categories:'ddsdsd',review:[{nameUser:'mohamedalaa',rate:'5',comment:'finetodone',timeComment:'11sep2011'}],city:'alex',country:'egypt'})
  */
