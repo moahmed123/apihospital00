@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 // Create App.
 const app = express();
 // Connect Database.
-mongoose.connect('', { useNewUrlParser: true });// Add Your Data Base.
+mongoose.connect('mongodb://m_alaa:b01224589500@ds039311.mlab.com:39311/hospital', { useNewUrlParser: true });// Add Your Data Base.
 // middelware 
 app.use(express.static('public')); // use public static files
 //app.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded {use in Login}
