@@ -28,9 +28,9 @@ app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
 });
 
-// Part 
-const part = process.env.PART || 3000;
-app.listen(part, ()=>{
+// Port 
+const port = process.env.PORT || 3000;
+app.listen(port, ()=>{
     console.log('done');
     console.log(mongoose.connection.readyState);
 });
