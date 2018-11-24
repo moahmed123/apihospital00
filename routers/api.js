@@ -27,6 +27,7 @@ router.post('/addhospital',(req, res, next) => {
     Insertlatitude   = req.query['latitude'];
     Inserttype       = req.query['type'];
     Insertcategories = req.query['categories'];
+    Insertactivation = req.query['activation'];
     //Insertreview     = req.query['review'];
     Insertcity       = req.query['city'];
     Insertcountry    = req.query['country'];
@@ -39,6 +40,7 @@ router.post('/addhospital',(req, res, next) => {
         type: Inserttype,
         categories: Insertcategories,
         city: Insertcity,
+        activation: Insertactivation,
         country: Insertcountry}).then((dataHotels) => {
         res.status(200).send({dataHotels : dataHotels, create: true});                
     }).catch(next);
