@@ -16,8 +16,30 @@ router.get('/hotelid',(req, res, next) => {
     }).catch(next);
 });
 // post - By Id Data Hotels
-router.post('/addhotel',(req, res, next) => {    
-    contact.create(req.body).then((dataHotels) => {
+router.post('/addhospital',(req, res, next) => {    
+    /*
+     ** name, address, details, longitude, latitude, type, categories, 
+     ** review, city, country 
+     */
+    Insertname       = req.query['name'];
+    Insertdetails    = req.query['details'];
+    Insertlongitude  = req.query['longitude'];
+    Insertlatitude   = req.query['latitude'];
+    Inserttype       = req.query['type'];
+    Insertcategories = req.query['categories'];
+    //Insertreview     = req.query['review'];
+    Insertcity       = req.query['city'];
+    Insertcountry    = req.query['country'];
+    //valuePutId = req.query['id'];
+    contact.create(
+        {name: Insertname,
+        details: Insertdetails,
+        longitude: Insertlongitude,
+        latitude: Insertlatitude,
+        type: Inserttype,
+        categories: Insertcategories,
+        city: Insertcity,
+        country: Insertcountry}).then((dataHotels) => {
         res.status(200).send({dataHotels : dataHotels, create: true});                
     }).catch(next);
 });
