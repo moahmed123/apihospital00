@@ -67,8 +67,8 @@ router.get('/hotel',(req, res, next) => {
 
 // delete - Data Hotels
 router.delete('/delete', (req, res, next)=>{    
-    hotelDelete = req.query['id'];
-    contact.findByIdAndDelete(hotelDelete).then((bodyData)=>{
+    hotelDelete = req.query['id'];    
+    contact.findByIdAndDelete({id: hotelDelete}).then((bodyData)=>{
         res.status(200).send({data: bodyData, delete:true});
     }).catch(next);
 });
