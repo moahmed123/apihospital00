@@ -31,7 +31,7 @@ router.post('/addhospital',(req, res, next) => {
     Insertphone       = req.query['phone'];
     Insertcity       = req.query['city'];
     Insertcountry    = req.query['country'];   
-     
+
     contact.create(
         {name: Insertname,
         details: Insertdetails,
@@ -88,8 +88,8 @@ router.put('/put', (req, res, next)=>{
     Updataphone      = req.query['phone'];
     Updatacity       = req.query['city'];
     Updatacountry    = req.query['country'];
-
-    contact.findOneAndUpdate({
+            
+    contact.findByIdAndUpdate({
         _id: valuePutId,
         name: Updataname,
         details: Updatadetails,
