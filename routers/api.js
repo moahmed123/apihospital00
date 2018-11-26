@@ -89,8 +89,7 @@ router.put('/put', (req, res, next)=>{
     Updatacity       = req.query['city'];
     Updatacountry    = req.query['country'];
             
-    contact.findByIdAndUpdate({
-        _id: valuePutId,
+    contact.findByIdAndUpdate({_id: valuePutId},{        
         name: Updataname,
         details: Updatadetails,
         longitude: Updatalongitude,
