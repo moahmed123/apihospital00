@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const contact = require('../models/hotelContent');
+const contact = require('../models/hospitalContent');
 
 // GET - Data Hotels
 router.get('/Allhotel',(req, res, next) => {   
@@ -28,10 +28,10 @@ router.post('/addhospital',(req, res, next) => {
     Inserttype       = req.query['type'];
     Insertcategories = req.query['categories'];
     Insertactivation = req.query['activation'];
-    //Insertreview     = req.query['review'];
+    Insertphone       = req.query['phone'];
     Insertcity       = req.query['city'];
-    Insertcountry    = req.query['country'];
-    //valuePutId = req.query['id'];
+    Insertcountry    = req.query['country'];   
+     
     contact.create(
         {name: Insertname,
         details: Insertdetails,
@@ -40,6 +40,7 @@ router.post('/addhospital',(req, res, next) => {
         type: Inserttype,
         categories: Insertcategories,
         city: Insertcity,
+        phone: Insertphone,
         activation: Insertactivation,
         country: Insertcountry}).then((dataHotels) => {
         res.status(200).send({dataHotels : dataHotels, create: true});                
@@ -76,9 +77,30 @@ router.delete('/delete', (req, res, next)=>{
 // update Data Hotels
 
 router.put('/put', (req, res, next)=>{
-    valuePutId = req.query['id'];
-    namedata = req.query['name'];
-    contact.findOneAndUpdate({_id: valuePutId},{name: namedata}).then(()=>{
+    valuePutId       = req.query['id'];    
+    Updataname       = req.query['name'];
+    Updatadetails    = req.query['details'];
+    Updatalongitude  = req.query['longitude'];
+    Updatalatitude   = req.query['latitude'];
+    Updatatype       = req.query['type'];
+    Updatacategories = req.query['categories'];
+    Updataactivation = req.query['activation'];    
+    Updataphone      = req.query['phone'];
+    Updatacity       = req.query['city'];
+    Updatacountry    = req.query['country'];
+
+    contact.findOneAndUpdate({
+        _id: valuePutId,
+        name: Updataname,
+        details: Updatadetails,
+        longitude: Updatalongitude,
+        latitude: Updatalatitude,
+        type: Updatatype,
+        categories: Updatacategories,
+        city: Updatacity,
+        phone: Updataphone,
+        activation: Updataactivation,
+        country: Updatacountry}).then(()=>{
         contact.find({_id: valuePutId}).then((dataput) =>{
             res.status(200).send(dataput);
         })

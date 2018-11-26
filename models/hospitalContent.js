@@ -27,6 +27,10 @@ const hospitalSchema = new Schema({
         type: Boolean,
         required: [true, 'activation names is required']
     },
+    phone:{
+        type: Number,
+        required: [true, 'number names is required']
+    },
     review:[{
         nameUser: String,
         rate: Number,
