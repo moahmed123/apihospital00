@@ -43,7 +43,7 @@ router.post('/addhospital',(req, res, next) => {
         phone: Insertphone,
         activation: Insertactivation,
         country: Insertcountry}).then((dataHotels) => {
-        res.status(200).send({dataHotels : dataHotels, create: true});                
+        res.status(200).send({dataHotels : dataHotels, create: true});
     }).catch(next);
 });
 /** 
@@ -51,21 +51,54 @@ router.post('/addhospital',(req, res, next) => {
  ** fineOne show one hotel like it. 
  **/
 router.get('/hotel',(req, res, next) => {
-    hotelName = req.query["name"];    
-    // To Find All Data Hotels.
-    if(hotelName == 'all'){
-        contact.find({}).then((AllDatahotels) => {
-            res.status(200).send({hotels: AllDatahotels});
+    hospitalName  = req.query["name"];                 
+    hotelLimit = req.query["limit"];
+    hospitalcity = req.query["city"];
+    // year: { $gte: 1980, $lte: 1989 } .reverse().
+    /**
+     * show all by name ---> http://localhost:3000/api/hotel?name=all & limit=number & city= all
+     * search by name   ---> http://localhost:3000/api/hotel?name=name & limit=number
+     * search by city   ---> http://localhost:3000/api/hotel?city=alexandria & limit=number  
+     * search by name and city ---->http://localhost:3000/api/hotel?name=name&city=city   
+     */
+    // Show All hospital By Name.
+    if(hospitalName == 'all'){
+        contact.find({}).then((AllDatahotels) => {            
+            res.status(200).send({
+                hotels : AllDatahotels.slice(0,hotelLimit),
+                count  : AllDatahotels.length
+            });
         }).catch(next);
-    }else{
+    // search By Name Look Like this Name
+    }else if (hospitalName != 'all' && !hospitalcity || hospitalcity == 'all'){        
+        contact.find({name: new RegExp('^' + hospitalName + '$', "i")}).then((dataHotels) => {
+            res.status(200).send({
+                dataHotels : dataHotels.slice(0,hotelLimit),
+                countName  : dataHotels.length
+            });                
+        }).catch(next);
+    // Show All hospital By City.
+    }else if(hospitalcity != 'all' && !hospitalName ){
         // Search For Hotels By Name.
-        contact.find({name: new RegExp('^' + hotelName + '$', "i")}).then((dataHotels) => {
-            res.status(200).send({dataHotels : dataHotels});                
+        contact.find({city: new RegExp('^' + hospitalcity + '$', "i")}).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,hotelLimit),
+                countCity    : data.length
+            });                
         }).catch(next);
-    }
-    
+    }else if(hospitalcity != 'all' && hospitalName != 'all' ){
+        // Search For Hotels By Name.
+        contact.find({
+            name: new RegExp('^' + hospitalName + '$', "i"),
+            city: new RegExp('^' + hospitalcity + '$', "i")
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,hotelLimit),
+                countCity    : data.length
+            });                
+        }).catch(next);
+    }    
 });
-
 // delete - Data Hotels
 router.delete('/delete', (req, res, next)=>{    
     hotelDelete = req.query['id'];    
@@ -75,7 +108,6 @@ router.delete('/delete', (req, res, next)=>{
 });
 
 // update Data Hotels
-
 router.put('/put', (req, res, next)=>{
     valuePutId       = req.query['id'];    
     Updataname       = req.query['name'];
