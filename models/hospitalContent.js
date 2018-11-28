@@ -10,16 +10,7 @@ const hospitalSchema = new Schema({
         type: String,
         required: [true, 'hospital names is required']
     },
-    loc:[{
-        longitude: {
-            type: Number,
-            //required: [true, 'longitude names is required']
-        },    
-        latitude: {
-            type: Number,
-            //required: [true, 'latitude names is required']
-        }
-    }],
+    loc:[{longitude:Number, latitude: Number}],            
     longitude: {
         type: Number,
         //required: [true, 'longitude names is required']
