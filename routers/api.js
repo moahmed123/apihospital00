@@ -36,8 +36,10 @@ router.post('/addhospital',(req, res, next) => {
     contact.create(
         {name: Insertname,
         details: Insertdetails,
-        loc:{longitude:Insertlongitude},
-        loc:{latitude:Insertlatitude},        
+        loc:{
+            longitude:Insertlongitude,
+            latitude:Insertlatitude
+        },        
         type: Inserttype,
         categories: Insertcategories,
         city: Insertcity,
