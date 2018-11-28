@@ -22,11 +22,11 @@ const hospitalSchema = new Schema({
     }],
     longitude: {
         type: Number,
-        required: [true, 'longitude names is required']
+        //required: [true, 'longitude names is required']
     },    
     latitude: {
         type: Number,
-        required: [true, 'latitude names is required']
+       // required: [true, 'latitude names is required']
     },
     type: String,
     categories: {
