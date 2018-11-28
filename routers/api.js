@@ -29,7 +29,7 @@ router.post('/addhospital',(req, res, next) => {
     Inserttype       = req.query['type'];
     Insertcategories = req.query['categories'];
     Insertactivation = req.query['activation'];
-    Insertphone       = req.query['phone'];
+    Insertphone      = req.query['phone'];
     Insertcity       = req.query['city'];
     Insertcountry    = req.query['country'];   
 
@@ -67,63 +67,54 @@ router.get('/hotel',(req, res, next) => {
      * search by name and city ---->http://localhost:3000/api/hotel?name=name&city=city   
      */
     // Show All hospital By Name.
-    // if(hospitalName == 'all'){
-    //     contact.find({}).then((AllDatahotels) => {            
-    //         res.status(200).send({
-    //             hotels : AllDatahotels.slice(0,hotelLimit),
-    //             count  : AllDatahotels.length
-    //         });
-    //     }).catch(next);
-    // // search By Name Look Like this Name
-    // }else if (hospitalName != 'all' && !hospitalcity || hospitalcity == 'all'){        
-    //     contact.find({name: new RegExp('^' + hospitalName + '$', "i")}).then((dataHotels) => {
-    //         res.status(200).send({
-    //             dataHotels : dataHotels.slice(0,hotelLimit),
-    //             countName  : dataHotels.length
-    //         });                
-    //     }).catch(next);
-    // // Show All hospital By City.
-    // }else if(hospitalcity != 'all' && !hospitalName ){
-    //     // Search For Hotels By Name.
-    //     contact.find({city: new RegExp('^' + hospitalcity + '$', "i")}).then((data) => {
-    //         res.status(200).send({
-    //             datahospital : data.slice(0,hotelLimit),
-    //             countCity    : data.length
-    //         });                
-    //     }).catch(next);
-    // }else if(hospitalcity != 'all' && hospitalName != 'all' ){
-    //     // Search For Hotels By Name.
-    //     contact.find({
-    //         name: new RegExp('^' + hospitalName + '$', "i"),
-    //         city: new RegExp('^' + hospitalcity + '$', "i")
-    //     }).then((data) => {
-    //         res.status(200).send({
-    //             datahospital : data.slice(0,hotelLimit),
-    //             countCity    : data.length
-    //         });                
-    //     }).catch(next);
-    // } 
-    if(hospitalLng != '', hospitalLat != ''){
-        //var options = { near: [hospitalLng, hospitalLat], maxDistance: 5 };
-        const lowerLeft   = [324232444, 5689444];
-        const upperRight  = [324232444,  5689444];
-        contact.where('loc').within().box(lowerLeft, upperRight).then((data) => {
+    if(hospitalName == 'all'){
+        contact.find({}).then((AllDatahotels) => {            
             res.status(200).send({
-                datahospital : data,
-                countCityro:data.length
+                hotels : AllDatahotels.slice(0,hotelLimit),
+                count  : AllDatahotels.length
             });
-        });
-        // contact.geoSearch({ type : "house" }, options).then((data) => {
-        //     res.status(200).send({
-        //         datahospital : data,
-        //         countCity:data.length
-        //     });
-        // });
+        }).catch(next);
+    // search By Name Look Like this Name
+    }else if (hospitalName != 'all' && !hospitalcity || hospitalcity == 'all'){        
+        contact.find({name: new RegExp('^' + hospitalName + '$', "i")}).then((dataHotels) => {
+            res.status(200).send({
+                dataHotels : dataHotels.slice(0,hotelLimit),
+                countName  : dataHotels.length
+            });                
+        }).catch(next);
+    // Show All hospital By City.
+    }else if(hospitalcity != 'all' && !hospitalName ){
+        // Search For Hotels By Name.
+        contact.find({city: new RegExp('^' + hospitalcity + '$', "i")}).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,hotelLimit),
+                countCity    : data.length
+            });                
+        }).catch(next);
+    }else if(hospitalcity != 'all' && hospitalName != 'all' ){
+        // Search For Hotels By Name.
+        contact.find({
+            name: new RegExp('^' + hospitalName + '$', "i"),
+            city: new RegExp('^' + hospitalcity + '$', "i")
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,hotelLimit),
+                countCity    : data.length
+            });                
+        }).catch(next);
+    } 
+    // year: { $gte: 1980, $lte: 1989 } .reverse().
+    
+    if(hospitalLng != '', hospitalLat != ''){
+        hospitalLnggte = hospitalLng * 2.00;
+        hospitalLngLte = hospitalLng / 2.00;            
+         //contact.find({ loc:{$longitude:{$gte: 9.10682735591432, $lte:23.10682735591432 }}}).then((data)=>{            
+        contact.find({longitude:{$gte: 9.10682735591432}}).then((data)=>{                        
+            res.status(200).send({datahos : data})
+        }).catch(next);       
     }    
 });
-var area = { center: [324232444, 5689444], radius: 10 };
-var x = contact.where('loc').within().centerSphere(area);
-console.log(x);
+
 // delete - Data Hotels
 router.delete('/delete', (req, res, next)=>{    
     hotelDelete = req.query['id'];    
