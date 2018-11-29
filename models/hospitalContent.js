@@ -19,7 +19,6 @@ const hospitalSchema = new Schema({
             index: '2d'
         },
         coordinates: [Number]
-        
     },
     type: String,
     categories: {
@@ -52,7 +51,6 @@ const hospitalSchema = new Schema({
         type: String     
     }
 });
-// hospitalSchema.index({'loc': '2dsphere'});
 const Datahospital = mongoose.model('hospitaldetails', hospitalSchema); //hospitaldetails
 
 module.exports = Datahospital;
