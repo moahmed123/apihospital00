@@ -9,17 +9,18 @@ const hospitalSchema = new Schema({
     details: {
         type: String,
         required: [true, 'hospital names is required']
+    },    
+    loc: {
+        type: {
+            type: "String",
+            required: true,
+            enum: ['Point', 'LineString', 'Polygon'],
+            default: 'Point',
+            index: '2d'
+        },
+        coordinates: [Number]
+        
     },
-    loc:[{
-        longitude: {
-            type: Number,
-            required: [true, 'longitude names is required']
-        },    
-        latitude: {
-            type: Number,
-            required: [true, 'latitude names is required']
-        }
-    }],
     type: String,
     categories: {
         type: String,
@@ -51,7 +52,7 @@ const hospitalSchema = new Schema({
         type: String     
     }
 });
-
+// hospitalSchema.index({'loc': '2dsphere'});
 const Datahospital = mongoose.model('hospitaldetails', hospitalSchema); //hospitaldetails
 
 module.exports = Datahospital;

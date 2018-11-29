@@ -31,15 +31,14 @@ router.post('/addhospital',(req, res, next) => {
     Insertactivation = req.query['activation'];
     Insertphone      = req.query['phone'];
     Insertcity       = req.query['city'];
-    Insertcountry    = req.query['country'];   
+    Insertcountry    = req.query['country'];
 
     contact.create(
         {name: Insertname,
-        details: Insertdetails,
-        loc:{
-            longitude:Insertlongitude,
-            latitude:Insertlatitude
-        },        
+        details: Insertdetails,        
+        // longitude:Insertlongitude,
+        // latitude:Insertlatitude,         
+        loc:{coordinates: [ Insertlongitude, Insertlatitude]},      
         type: Inserttype,
         categories: Insertcategories,
         city: Insertcity,
@@ -54,64 +53,86 @@ router.post('/addhospital',(req, res, next) => {
  ** fineOne show one hotel like it. 
  **/
 router.get('/hotel',(req, res, next) => {
-    hospitalName  = req.query["name"];                 
-    hotelLimit = req.query["limit"];
-    hospitalcity = req.query["city"];
-    hospitalLng = req.query["lng"];
-    hospitalLat = req.query["lat"];
-    // year: { $gte: 1980, $lte: 1989 } .reverse().
+    name  = req.query["name"];                 
+    limit = req.query["limit"];
+    city  = req.query["city"];
+    long  = req.query["lng"];
+    lat   = req.query["lat"];
+    phone = req.query["lat"];
+    cat   = req.query['cat']; // categories
+    
     /**
+     * main Api ===> api/hotel?name=all&limit=20&city=all&long=-1.2323&lat=2.34245&phone=all&cat=all
      * show all by name ---> http://localhost:3000/api/hotel?name=all & limit=number & city= all
      * search by name   ---> http://localhost:3000/api/hotel?name=name & limit=number
      * search by city   ---> http://localhost:3000/api/hotel?city=alexandria & limit=number  
      * search by name and city ---->http://localhost:3000/api/hotel?name=name&city=city   
      */
     // Show All hospital By Name.
-    if(hospitalName == 'all'){
+
+    if(name == 'all'){
         contact.find({}).then((AllDatahotels) => {            
             res.status(200).send({
-                hotels : AllDatahotels.slice(0,hotelLimit),
+                hotels : AllDatahotels.slice(0,limit),
                 count  : AllDatahotels.length
             });
-        }).catch(next);
+        }).catch(next);}
     // search By Name Look Like this Name
-    }else if (hospitalName != 'all' && !hospitalcity || hospitalcity == 'all'){        
-        contact.find({name: new RegExp('^' + hospitalName + '$', "i")}).then((dataHotels) => {
-            res.status(200).send({
-                dataHotels : dataHotels.slice(0,hotelLimit),
-                countName  : dataHotels.length
-            });                
-        }).catch(next);
-    // Show All hospital By City.
-    }else if(hospitalcity != 'all' && !hospitalName ){
-        // Search For Hotels By Name.
-        contact.find({city: new RegExp('^' + hospitalcity + '$', "i")}).then((data) => {
-            res.status(200).send({
-                datahospital : data.slice(0,hotelLimit),
-                countCity    : data.length
-            });                
-        }).catch(next);
-    }else if(hospitalcity != 'all' && hospitalName != 'all' ){
-        // Search For Hotels By Name.
-        contact.find({
-            name: new RegExp('^' + hospitalName + '$', "i"),
-            city: new RegExp('^' + hospitalcity + '$', "i")
-        }).then((data) => {
-            res.status(200).send({
-                datahospital : data.slice(0,hotelLimit),
-                countCity    : data.length
-            });                
-        }).catch(next);
-    } 
+    // }else if (name != 'all' && !city || city == 'all'){        
+    //     contact.find({name: new RegExp('^' + name + '$', "i")}).then((dataHotels) => {
+    //         res.status(200).send({
+    //             dataHotels : dataHotels.slice(0,limit),
+    //             countName  : dataHotels.length
+    //         });                
+    //     }).catch(next);
+    // // Show All hospital By City.
+    // }else if(city != 'all' && !name ){
+    //     // Search For Hotels By Name.
+    //     contact.find({city: new RegExp('^' + city + '$', "i")}).then((data) => {
+    //         res.status(200).send({
+    //             datahospital : data.slice(0,limit),
+    //             countCity    : data.length
+    //         });                
+    //     }).catch(next);
+    // }else if(city != 'all' && name != 'all' ){
+    //     // Search For Hotels By Name.
+    //     contact.find({
+    //         name: new RegExp('^' + name + '$', "i"),
+    //         city: new RegExp('^' + city + '$', "i")
+    //     }).then((data) => {
+    //         res.status(200).send({
+    //             datahospital : data.slice(0,limit),
+    //             countCity    : data.length
+    //         });                
+    //     }).catch(next);
+    // } 
     // year: { $gte: 1980, $lte: 1989 } .reverse().
     
-    if(hospitalLng != '', hospitalLat != ''){
-        hospitalLnggte = hospitalLng * 2.00;
-        hospitalLngLte = hospitalLng / 2.00;            
+    else if(long != '', lat != ''){
+        longgte = long * 2.00;
+        longLte = long / 2.00;            
          //contact.find({ loc:{$longitude:{$gte: 9.10682735591432, $lte:23.10682735591432 }}}).then((data)=>{            
-        contact.find({longitude:{$gte: 9.10682735591432}}).then((data)=>{                        
-            res.status(200).send({datahos : data})
+        // contact.find({longitude:{$gte: 9.10682735591432}}).then((data)=>{                        
+        //     res.status(200).send({datahos : data})
+        // }).catch(next);       
+        // test near 
+        contact.find(
+            {
+              loc:
+                { $near :
+                   {
+                     $geometry: { type: "Point",  coordinates: [ long, lat ] },
+                    // $minDistance: 1000,
+                     //$maxDistance: 25000,
+                     
+                     $maxDistance: 880000
+                   }
+                }
+            }
+         ).then((data)=>{                        
+                res.status(200).send({datahos : data, countlon: data.length})
         }).catch(next);       
+
     }    
 });
 
