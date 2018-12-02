@@ -59,81 +59,126 @@ router.get('/hotel',(req, res, next) => {
     long  = req.query["lng"];
     lat   = req.query["lat"];
     phone = req.query["lat"];
-    cat   = req.query['cat']; // categories
-    
+    cat   = req.query['cat']; // categories  
+    dis   = req.query['dis'];
+    admin  = req.query['admin'];
+    active  = req.query['active'];
     /**
-     * main Api ===> api/hotel?name=all&limit=20&city=all&long=-1.2323&lat=2.34245&phone=all&cat=all
-     * show all by name ---> http://localhost:3000/api/hotel?name=all & limit=number & city= all
-     * search by name   ---> http://localhost:3000/api/hotel?name=name & limit=number
-     * search by city   ---> http://localhost:3000/api/hotel?city=alexandria & limit=number  
-     * search by name and city ---->http://localhost:3000/api/hotel?name=name&city=city   
-     */
-    // Show All hospital By Name.
-
-    if(name == 'all'){
+     ***** All Api Link To Use **** 
+     *************Admin************
+     * 1- search all Data :
+     *  - http://localhost:3000/api/hotel?name=all&city=all&cat=all&admin=admin&limit=10&active=all
+     * 
+     * 2- search by Name :  
+     *  - http://localhost:3000/api/hotel?name=nameCity&city=all&cat=all&admin=admin&limit=10&active=all
+     * 
+     * 
+     ******** End Admin ***********
+     *
+     * 
+     * 
+     **/
+    // Show All hospital == {{**Admin**}}
+    if(name == 'all' && city == 'all' && cat == 'all' && admin =='admin' && active == 'all'){
         contact.find({}).then((AllDatahotels) => {            
             res.status(200).send({
-                hotels : AllDatahotels.slice(0,limit),
-                count  : AllDatahotels.length
+                hotels     : AllDatahotels.slice(0,limit),
+                adminCount : AllDatahotels.length
             });
-        }).catch(next);}
-    // search By Name Look Like this Name
-    // }else if (name != 'all' && !city || city == 'all'){        
-    //     contact.find({name: new RegExp('^' + name + '$', "i")}).then((dataHotels) => {
-    //         res.status(200).send({
-    //             dataHotels : dataHotels.slice(0,limit),
-    //             countName  : dataHotels.length
-    //         });                
-    //     }).catch(next);
-    // // Show All hospital By City.
-    // }else if(city != 'all' && !name ){
-    //     // Search For Hotels By Name.
-    //     contact.find({city: new RegExp('^' + city + '$', "i")}).then((data) => {
-    //         res.status(200).send({
-    //             datahospital : data.slice(0,limit),
-    //             countCity    : data.length
-    //         });                
-    //     }).catch(next);
-    // }else if(city != 'all' && name != 'all' ){
-    //     // Search For Hotels By Name.
-    //     contact.find({
-    //         name: new RegExp('^' + name + '$', "i"),
-    //         city: new RegExp('^' + city + '$', "i")
-    //     }).then((data) => {
-    //         res.status(200).send({
-    //             datahospital : data.slice(0,limit),
-    //             countCity    : data.length
-    //         });                
-    //     }).catch(next);
-    // } 
-    // year: { $gte: 1980, $lte: 1989 } .reverse().
-    
-    else if(long != '', lat != ''){
-        longgte = long * 2.00;
-        longLte = long / 2.00;            
-         //contact.find({ loc:{$longitude:{$gte: 9.10682735591432, $lte:23.10682735591432 }}}).then((data)=>{            
-        // contact.find({longitude:{$gte: 9.10682735591432}}).then((data)=>{                        
-        //     res.status(200).send({datahos : data})
-        // }).catch(next);       
-        // test near 
-        contact.find(
-            {
-              loc:
-                { $near :
-                   {
-                     $geometry: { type: "Point",  coordinates: [ long, lat ] },
-                    // $minDistance: 1000,
-                     //$maxDistance: 25000,
-                     
-                     $maxDistance: 880000
-                   }
-                }
+        }).catch(next);        
+    }// search by name Hospital == {{**Admin**}}
+    else if (name != 'all' && city == 'all' && cat == 'all' && admin =='admin' && active == 'all'){        
+        contact.find({name: new RegExp('^' + name + '$', "i")}).then((dataHotels) => {
+            res.status(200).send({
+                dataHotels : dataHotels.slice(0,limit),
+                countByName  : dataHotels.length
+            });                
+        }).catch(next);    
+    }// Show All hospital By City == {{**Admin**}}
+    else if(name == 'all' && city != 'all' && cat == 'all' && admin =='admin' && active == 'all'){        
+        contact.find({city: new RegExp('^' + city + '$', "i")}).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,limit),
+                countByCity    : data.length
+            });                
+        }).catch(next);
+    } //search by name and city == {{**Admin**}}    
+    else if(city != 'all' && name != 'all' && cat == 'all' && admin =='admin' && active == 'all'){        
+        contact.find({
+            name: new RegExp('^' + name + '$', "i"),
+            city: new RegExp('^' + city + '$', "i")
+        }).then((data) => {
+            res.status(200).send({
+                datahospital     : data.slice(0,limit),
+                countCityAndName : data.length
+            });                
+        }).catch(next);
+    }// search from activation only == {{**admin**}}
+    else if(city == 'all' && name == 'all' && active != 'all' && admin == 'admin'&& cat=='all'){
+        console.log('dsd')
+        contact.find({                         
+            activation: active
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,limit),
+                countActive  : data.length
+            });                
+        }).catch(next);
+    }// search from categories only == {{**admin**}}
+    else if(city == 'all' && name == 'all' && cat != 'all' && admin == 'admin'){               
+        contact.find({                         
+            categories: new RegExp('^' + cat + '$', "i")
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,limit),
+                countCat  : data.length
+            });                
+        }).catch(next);
+    }// search from city & categories == {{**admin and user **}}
+    else if(city != 'all' && name == 'all' && cat != 'all' && admin == 'admin'){               
+        contact.find({             
+            city: new RegExp('^' + city + '$', "i"),         
+            categories: new RegExp('^' + cat + '$', "i")
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,limit),
+                countcityCat  : data.length
+            });                
+        }).catch(next);
+    }
+    // search from city, active, long and lat== {{**user**}}
+    else if(city != 'all' && name == 'all' && cat == 'all' && long != ''& lat != '' && active != 'all'){               
+        contact.find({                      
+            loc:
+            { $near :
+               {
+                 $geometry: { type: "Point",  coordinates: [ long, lat ] },                
+                 $maxDistance:dis
+               }
             }
-         ).then((data)=>{                        
-                res.status(200).send({datahos : data, countlon: data.length})
-        }).catch(next);       
-
-    }    
+        }).then((data) => {
+            res.status(200).send({
+                datahospital : data.slice(0,limit),
+                countNearLoc   : data.length
+            });                
+        }).catch(next);
+    } 
+     // show by longitude and latitude        
+    // else if(long != '', lat != ''& city =='all'& name=='all'&cat == 'all'){
+    //     contact.find(
+    //         {
+    //           loc:
+    //             { $near :
+    //                {
+    //                  $geometry: { type: "Point",  coordinates: [ long, lat ] },                    
+    //                  $maxDistance: 2000
+    //                }
+    //             }
+    //         }
+    //      ).then((data)=>{                        
+    //             res.status(200).send({datahos : data, countlon: data.length})
+    //     }).catch(next);       
+    // }    
 });
 
 // delete - Data Hotels
@@ -150,7 +195,7 @@ router.put('/put', (req, res, next)=>{
     Updataname       = req.query['name'];
     Updatadetails    = req.query['details'];
     Updatalongitude  = req.query['longitude'];
-    Updatalatitude   = req.query['latitude'];
+    Updatalatitude   = req.query['latitude'];    
     Updatatype       = req.query['type'];
     Updatacategories = req.query['categories'];
     Updataactivation = req.query['activation'];    
@@ -161,8 +206,9 @@ router.put('/put', (req, res, next)=>{
     contact.findByIdAndUpdate({_id: valuePutId},{        
         name: Updataname,
         details: Updatadetails,
-        longitude: Updatalongitude,
-        latitude: Updatalatitude,
+        // longitude: Updatalongitude,
+        // latitude: Updatalatitude,
+        loc:{coordinates: [ Insertlongitude, Insertlatitude]},
         type: Updatatype,
         categories: Updatacategories,
         city: Updatacity,

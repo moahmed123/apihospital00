@@ -51,6 +51,7 @@ const hospitalSchema = new Schema({
         type: String     
     }
 });
+//hospitalSchema.index({'gpshits' : '2dsphere'});
 const Datahospital = mongoose.model('hospitaldetails', hospitalSchema); //hospitaldetails
 
 module.exports = Datahospital;
