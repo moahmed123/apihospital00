@@ -15,15 +15,15 @@ app.use('/api', require('./routers/api'));
 // Add headers
 app.use( (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-//     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");    
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3030');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");    
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3030');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.UseCors(CorsOptions.AllowAll);
-config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
+// app.UseCors(CorsOptions.AllowAll);
+// config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
 
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
