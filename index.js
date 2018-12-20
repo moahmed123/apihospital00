@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-//var cors = require('cors');
+var cors = require('cors');
 
 // Create App.
 const app = express();
@@ -22,6 +22,7 @@ app.use( (req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+app.use(cors());
 // app.UseCors(CorsOptions.AllowAll);
 // config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
 
