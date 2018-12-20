@@ -23,8 +23,8 @@ app.use( (req, res, next) => {
     next();
 });
 app.use(cors());
-app.UseCors(CorsOptions.AllowAll);
-// config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
+// app.UseCors(CorsOptions.AllowAll);
+config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
 
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
