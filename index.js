@@ -22,16 +22,33 @@ app.use( (req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.use(cors());
+// app.use(cors());
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
 });
+//------------------------------------------------------------------------
+// Set up a whitelist and check against it:
+var whitelist = ['https://apihospital00.herokuapp.com/api/hotel?name=all&city=all&cat=all&admin=admin&limit=20&active=all', 'https://dashboardmobile.herokuapp.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+// Then pass them to cors:
+app.use(cors(corsOptions));
+//------------------------------------------------------------------------
+
 // Port 
 const port = process.env.PORT || 3000;
 app.listen( port, () => {
     console.log('done');
     console.log(mongoose.connection.readyState);
 });
+
 /**
  * Data Base To Used
  * db.hospitaldetails.insert({name:'homya',details:'findsdse',longitude:'2343434',latitude:'495065',type:'fddf',categories:'ddsdsd',review:[{nameUser:'mohamedalaa',rate:'5',comment:'finetodone',timeComment:'11sep2011'}],city:'alex',country:'egypt'})
