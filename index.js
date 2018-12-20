@@ -28,7 +28,7 @@ app.use((err, req, res, next)=>{  // Error Middelware
 });
 //------------------------------------------------------------------------
 // Set up a whitelist and check against it:
-var whitelist = ['https://apihospital00.herokuapp.com/api/hotel?name=all&city=all&cat=all&admin=admin&limit=20&active=all', 'https://dashboardmobile.herokuapp.com']
+var whitelist = ['https://apihospital00.herokuapp.com', 'https://dashboardmobile.herokuapp.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
