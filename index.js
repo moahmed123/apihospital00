@@ -22,6 +22,9 @@ app.use( (req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+app.UseCors(CorsOptions.AllowAll);
+config.EnableCors(new EnableCorsAttribute(Properties.Settings.Default.Cors, "", ""));
+
 app.use((err, req, res, next)=>{  // Error Middelware
     res.status(422).send({error: err.message});
 });
