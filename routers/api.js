@@ -203,12 +203,12 @@ router.put('/put', (req, res, next)=>{
     Updatacity       = req.query['city'];
     Updatacountry    = req.query['country'];
             
-    contact.findByIdAndUpdate({_id: valuePutId},{        
+    contact.findOneAndUpdate({_id: valuePutId},{        
         name: Updataname,
-        details: Updatadetails,
-        // longitude: Updatalongitude,
-        // latitude: Updatalatitude,                
-        loc:{coordinates: [ Updatalongitude, Updatalatitude]},
+        details: Updatadetails,                       
+        loc:{ 
+           type: "Point",
+           coordinates: [ Updatalongitude, Updatalatitude]},
         type: Updatatype,
         categories: Updatacategories,
         city: Updatacity,
@@ -220,5 +220,4 @@ router.put('/put', (req, res, next)=>{
         })
     }).catch(next);
 })
-
 module.exports = router;
