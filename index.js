@@ -27,7 +27,7 @@ app.use(bodyParser.json());// parse application/json
 //   next();
 // });
 // use it before all route definitions
-app.use(cors({origin: 'https://dashboardmobile.herokuapp.com'}));
+app.use(cors({origin: '*'}));
 
 app.use('/api', require('./routers/api'));
 
