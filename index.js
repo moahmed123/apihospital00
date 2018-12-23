@@ -15,7 +15,7 @@ app.use(bodyParser.json());// parse application/json
 // Add headers
 app.use( (req, res, next) => {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://dashboardmobile.herokuapp.com/');
+  res.setHeader('Access-Control-Allow-Origin', 'https://dashboardmobile.herokuapp.com');
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   // Request headers you wish to allow
@@ -26,6 +26,9 @@ app.use( (req, res, next) => {
   // Pass to next layer of middleware
   next();
 });
+
+// use it before all route definitions
+app.use(cors({origin: 'https://dashboardmobile.herokuapp.com'}));
 
 app.use('/api', require('./routers/api'));
 
